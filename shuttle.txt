@@ -1,4 +1,4 @@
-Time Fpv_Close High Bpv_Close Bpv_Open
+Time Rad_Flow Fpv_Close Fpv_Open High Bypass Bpv_Close Bpv_Open
 55 0 81 0 -6 11 25 88 64 4
 56 0 96 0 52 -4 40 44 4 4
 50 -1 89 -7 50 0 39 40 2 1
