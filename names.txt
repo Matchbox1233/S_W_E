@@ -1,9 +1,9 @@
-Time
-Rad_Flow
-Fpv_Close 
-Fpv_Open 
-High 
-Bypass 
-Bpv_Close 
-Bpv_Open
-spam
+time continuous.
+rad_Flow continuous.
+fpv_Close continuous.
+fpv_Open continuous.
+high continuous. 
+bypass continuous. 
+bpv_Close continuous. 
+bpv_Open continuous.
+spam binomial.
