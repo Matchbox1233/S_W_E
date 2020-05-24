@@ -15,8 +15,12 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import jaxb.JAXBHelper;
+import lombok.SneakyThrows;
 import model.Exercise;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import model.Exercises;
+import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -232,8 +236,11 @@ public class FirstController implements Initializable {
     }
 
 
+    @SneakyThrows
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+
 
         /**
          * Set up the columns in the table
@@ -249,18 +256,17 @@ public class FirstController implements Initializable {
         /**
          *Load dummy data
          */
-        Table_Chest.setItems(getExercise());
-        Table_Back.setItems(getExercise());
-        Table_Shoulder.setItems(getExercise());
-        Table_Abs.setItems(getExercise());
-        Table_Leg.setItems(getExercise());
-        Table_Biceps.setItems(getExercise());
-        Table_Triceps.setItems(getExercise());
+        Table_Chest.setItems(getExercise("Chest"));
+        Table_Back.setItems(getExercise("Back"));
+        Table_Shoulder.setItems(getExercise("Shoulder"));
+        Table_Abs.setItems(getExercise("Abs"));
+        Table_Leg.setItems(getExercise("Leg"));
+        Table_Biceps.setItems(getExercise("Biceps"));
+        Table_Triceps.setItems(getExercise("Triceps"));
 
         /**
          * Update all table to allow for the exercise fields to be editable
          */
-
         Table_Chest.setEditable(true);
         Chest_Column.setCellFactory(TextFieldTableCell.forTableColumn());
         Table_Back.setEditable(true);
@@ -295,30 +301,37 @@ public class FirstController implements Initializable {
      * This method will create a new Exercise object and add it to the table
      */
     public void addExercise() {
-        Exercise newExercise = new Exercise(Exercise_Add_TextField.getText());
+        Exercise newExercise;
 
         /**
          * Get all the items from the table as a list, then add the new exercise to the list
          */
         if (Exercise_Type == exerciseType.Chest) {
+            newExercise = new Exercise(Exercise_Add_TextField.getText(),"Chest");
             Table_Chest.getItems().add(newExercise);
         }
         else if (Exercise_Type == exerciseType.Back) {
+            newExercise = new Exercise(Exercise_Add_TextField.getText(),"Back");
             Table_Back.getItems().add(newExercise);
         }
         else if (Exercise_Type == exerciseType.Abs){
+            newExercise = new Exercise(Exercise_Add_TextField.getText(),"Abs");
             Table_Abs.getItems().add(newExercise);
         }
         else if (Exercise_Type == exerciseType.Shoulder) {
+            newExercise = new Exercise(Exercise_Add_TextField.getText(),"Shoulder");
             Table_Shoulder.getItems().add(newExercise);
         }
         else if (Exercise_Type == exerciseType.Leg) {
+            newExercise = new Exercise(Exercise_Add_TextField.getText(),"Leg");
             Table_Leg.getItems().add(newExercise);
         }
         else if (Exercise_Type == exerciseType.Biceps) {
+            newExercise = new Exercise(Exercise_Add_TextField.getText(),"Biceps");
             Table_Biceps.getItems().add(newExercise);
         }
         else if (Exercise_Type == exerciseType.Triceps){
+            newExercise = new Exercise(Exercise_Add_TextField.getText(),"Triceps");
             Table_Triceps.getItems().add(newExercise);
 
         }
@@ -327,22 +340,20 @@ public class FirstController implements Initializable {
     }
 
     /**
+     * @param trainingExercises name of an exercise type
      * @return This method will return an ObservableList of Exercise objects
+     * @throws JAXBException if any problem occurs during deserialization
+     *
      */
-    public ObservableList<Exercise> getExercise() {
+
+    public ObservableList<Exercise> getExercise(String trainingExercises) throws JAXBException {
+        Exercises workoutExercises = JAXBHelper.fromXML(Exercises.class,getClass().getClassLoader().getResourceAsStream("xml/exercises.xml"));
         ObservableList<Exercise> exercises = FXCollections.observableArrayList();
-        exercises.add(new Exercise("valami"));
-        exercises.add(new Exercise("sanyi"));
-        exercises.add(new Exercise("xd"));
-        exercises.add(new Exercise("hehe"));
-        exercises.add(new Exercise("valami2"));
-        exercises.add(new Exercise("sanyi2"));
-        exercises.add(new Exercise("xd2"));
-        exercises.add(new Exercise("hehe2"));
-        exercises.add(new Exercise("valami3"));
-        exercises.add(new Exercise("sanyi3"));
-        exercises.add(new Exercise("xd3"));
-        exercises.add(new Exercise("hehe3"));
+        for (Exercise exercise:workoutExercises.getExercise()) {
+            if (exercise.getExerciseType().equals(trainingExercises)){
+                exercises.add(exercise);
+            }
+        }
 
         return exercises;
     }
